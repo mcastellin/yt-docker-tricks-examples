@@ -18,7 +18,7 @@ USER appuser
 COPY --chown=appuser *.sh ./
 RUN chmod +x *.sh
 
-VOLUME [ "/var/lib/myapp" ]
+VOLUME [ "/data" ]
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["./generator.sh"]

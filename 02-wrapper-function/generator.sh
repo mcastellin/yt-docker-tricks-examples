@@ -3,7 +3,7 @@
 # This sample script will generate a few GUIDs and
 # append them to the keys file in the /var/lib/myapp/
 
-DATA_DIR=/var/lib/myapp
+DATA_DIR=/data
 
 echo "Adding 5 keys to keys.txt"
 for i in {1..5}; do

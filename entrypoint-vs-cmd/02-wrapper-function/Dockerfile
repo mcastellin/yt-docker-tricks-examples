@@ -12,13 +12,17 @@ WORKDIR /myapp
 
 # create a non-root user to run the script generator
 RUN useradd -l -M appuser
-USER appuser
 
 # copy scripts and set exec permissions
-COPY --chown=appuser *.sh ./
+COPY *.sh ./
 RUN chmod +x *.sh
 
+# create data directory and set ownership
+RUN mkdir /data \
+    && chown appuser /data
 VOLUME [ "/data" ]
+
+USER appuser
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["./generator.sh"]

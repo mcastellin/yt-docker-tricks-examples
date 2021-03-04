@@ -1,2 +1,3 @@
-# entrypoint-vs-cmd-examples
-A repository to store examples of typical use cases for the ENTRYPOINT keyword in Dockerfiles
+# YT Docker Tips & Tricks Examples
+
+This repository contains all example projects for my YouTube videos of the **Docker Development Tips & Tricks** serie.

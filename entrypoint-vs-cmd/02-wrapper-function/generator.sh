@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # This sample script will generate a few GUIDs and
 # append them to the keys file in the /var/lib/myapp/

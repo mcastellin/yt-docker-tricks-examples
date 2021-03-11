@@ -1,0 +1,41 @@
+####################################################################
+# First stage to collect project files and get package dependencies
+####################################################################
+FROM golang:1.16 AS builder
+
+WORKDIR /go/src/echo-go
+COPY go.mod go.sum *.go ./
+RUN go get -d -v
+
+
+####################################################################
+# A build stage to generate a container image for debugging purposes
+####################################################################
+FROM builder AS debug
+
+# Install debugger and build applicaiton with debug flags
+RUN go get github.com/go-delve/delve/cmd/dlv
+RUN go build -gcflags "all=-N -l" .
+
+EXPOSE 2345 8081
+
+CMD ["/go/bin/dlv", "--listen=:2345", "--headless=true", "--api-version=2", "exec", "./echoapp"]
+
+
+####################################################################
+# This stage will build the application binary for the "echoapp"
+####################################################################
+FROM builder AS builder1
+# need to use the CGO_ENABLED=0 to disably dynamic linking used by the net library
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./echoapp .
+
+
+####################################################################
+# Generates a container image from scratch with just the binary
+####################################################################
+FROM scratch AS production
+COPY --from=builder1 /go/src/echo-go/echoapp /echoapp
+
+EXPOSE 8081
+
+CMD ["/echoapp"]

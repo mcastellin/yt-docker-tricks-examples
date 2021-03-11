@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHealthCheck(t *testing.T) {
@@ -14,10 +16,7 @@ func TestHealthCheck(t *testing.T) {
 
 	handler.ServeHTTP(rr, request)
 
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("Handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
+	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
 func TestUpperCaseString(t *testing.T) {
@@ -28,16 +27,10 @@ func TestUpperCaseString(t *testing.T) {
 
 	handler.ServeHTTP(rr, request)
 
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("StringEchoHandler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
+	assert.Equal(t, rr.Code, http.StatusOK)
 
 	expected := "Echo: \"SHOULD-BE-UPPER\""
-	if body := rr.Body.String(); body != expected {
-		t.Errorf("StringEchoHandler returned wrong body: got %v want %v",
-			body, expected)
-	}
+	assert.Equal(t, expected, rr.Body.String())
 }
 
 func TestDefaultStringEcho(t *testing.T) {
@@ -48,16 +41,10 @@ func TestDefaultStringEcho(t *testing.T) {
 
 	handler.ServeHTTP(rr, request)
 
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("StringEchoHandler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
+	assert.Equal(t, rr.Code, http.StatusOK)
 
 	expected := "Echo: \"shouldJustBeEcho\""
-	if body := rr.Body.String(); body != expected {
-		t.Errorf("StringEchoHandler returned wrong body: got %v want %v",
-			body, expected)
-	}
+	assert.Equal(t, expected, rr.Body.String())
 }
 
 func TestInvalidStringEchoCommand(t *testing.T) {
@@ -68,8 +55,5 @@ func TestInvalidStringEchoCommand(t *testing.T) {
 
 	handler.ServeHTTP(rr, request)
 
-	if status := rr.Code; status != http.StatusInternalServerError {
-		t.Errorf("StringEchoHandler returned wrong status code: got %v want %v",
-			status, http.StatusInternalServerError)
-	}
+	assert.Equal(t, rr.Code, http.StatusInternalServerError)
 }

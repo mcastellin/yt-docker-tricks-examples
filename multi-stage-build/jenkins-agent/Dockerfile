@@ -1,6 +1,6 @@
 FROM jenkinsci/jnlp-slave
 
-# switching to root user temporarly to install our agent
+# switching to root user temporarly to install additional software
 USER root
 
 # the `jenkinsci/jnlp-slave` container is bundled with openjdk-8

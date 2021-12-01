@@ -4,7 +4,7 @@ FROM golang:1.16 AS builder
 
 WORKDIR /go/src/echo-go
 
-COPY go.mod *.go ./
+COPY go.mod go.sum *.go ./
 
 RUN go get -d -v
 RUN go test -v
